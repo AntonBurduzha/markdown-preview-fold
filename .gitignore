@@ -1,0 +1,13 @@
+node_modules/
+dist/
+out/
+coverage/
+.vscode-test/
+*.vsix
+.DS_Store
+
+# Private learning notes
+docs/learn/
+
+# Claude
+CLAUDE.md
