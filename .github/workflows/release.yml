@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: write # create the GitHub Release
-  id-token: write # VS Code Marketplace Trusted Publishing (OIDC)
 
 jobs:
   release:
@@ -24,8 +23,6 @@ jobs:
       - run: pnpm check
       - run: xvfb-run -a pnpm test:integration
       - run: pnpm exec vsce package --no-dependencies --out markdown-preview-fold.vsix
-      - name: Publish to the VS Code Marketplace
-        run: pnpm exec vsce publish --packagePath markdown-preview-fold.vsix --oidc
       - name: Publish to Open VSX
         run: pnpm exec ovsx publish markdown-preview-fold.vsix
         env:

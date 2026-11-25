@@ -55,4 +55,5 @@ The code runs in two places: the extension host (Node) and the preview page (a b
    git push origin vX.Y.Z
    ```
 
-3. The release workflow checks that the tag matches `package.json`, runs all the checks again, builds one `.vsix`, and publishes that file to the VS Code Marketplace (Trusted Publishing), Open VSX (the `OVSX_PAT` secret) and GitHub Releases.
+3. The release workflow checks that the tag matches `package.json`, runs all the checks again, builds one `.vsix`, and publishes that file to Open VSX (the `OVSX_PAT` secret) and GitHub Releases.
+4. Download the `.vsix` from the GitHub Release (`gh release download vX.Y.Z --pattern '*.vsix'`) and upload it on the [Marketplace publisher page](https://marketplace.visualstudio.com/manage): **⋯ → Update**. See ADR 010 in `docs/decisions.md` for why this step is manual.
