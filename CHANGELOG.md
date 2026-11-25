@@ -2,7 +2,13 @@
 
 All notable changes to this extension are documented here. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/AntonBurduzha/markdown-preview-fold/compare/v0.1.1...HEAD)
+## [Unreleased](https://github.com/AntonBurduzha/markdown-preview-fold/compare/v0.1.2...HEAD)
+
+## [0.1.2](https://github.com/AntonBurduzha/markdown-preview-fold/compare/v0.1.1...v0.1.2) - 2026-11-25
+
+### Changed
+
+- The Marketplace badge in the README uses the default label of the badge service.
 
 ## [0.1.1](https://github.com/AntonBurduzha/markdown-preview-fold/compare/v0.1.0...v0.1.1) - 2026-11-25
 
