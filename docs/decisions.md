@@ -80,6 +80,14 @@ An earlier version ignored a command present on a page's first update, on the as
 
 **Consequences.** Feedback comes from issues and reviews. The README says so, which helps trust.
 
+## 010. Upload to the Marketplace by hand
+
+**Context.** The release workflow first published to the Marketplace with Trusted Publishing (`vsce publish --oidc`). The release of 0.1.1 failed with `401 Unauthorized: The token could not be exchanged for the specified publisher`, although the rule named the right owner, repository and `release.yml`. GitHub repositories created after 2026-07-15 get immutable subject claims (`repo:AntonBurduzha@11467361/markdown-preview-fold@1472026423:…`), and this repository can't opt out: the setting is locked on. The most likely cause is that the Marketplace doesn't match this format yet. The other way, a Personal Access Token, needs an Azure DevOps organization, and a new organization needs an Azure subscription.
+
+**Decision.** A tag publishes to Open VSX and GitHub Releases. The maintainer downloads the `.vsix` from the GitHub Release and uploads it on the Marketplace publisher page. Both registries get the same file, built in CI.
+
+**Consequences.** One manual step per release, and the Marketplace gets the version a few minutes later than Open VSX. No Azure account and no token to renew. When the Marketplace accepts immutable subjects, add the step back with `vsce publish --packagePath markdown-preview-fold.vsix --oidc` and `id-token: write`.
+
 ## Spike results (T02)
 
 The integration tests cover the marker and the commands in VS Code 1.90.0 and stable. The rest is checked by hand in the editor, with the checklist in the developer's handbook. Cursor: 3.31.11 (VS Code 1.128.0), checked 2026-11-25. VS Code: 1.148.0, checked 2026-11-25.
