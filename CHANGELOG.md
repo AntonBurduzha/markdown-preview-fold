@@ -4,7 +4,7 @@ All notable changes to this extension are documented here. The format is based o
 
 ## [Unreleased](https://github.com/AntonBurduzha/markdown-preview-fold/compare/v0.1.0...HEAD)
 
-## [0.1.0](https://github.com/AntonBurduzha/markdown-preview-fold/releases/tag/v0.1.0) - 2026-11-25
+## [0.1.0](https://github.com/AntonBurduzha/markdown-preview-fold/releases/tag/v0.1.0) - 2026-11-25 
 
 ### Added
 
