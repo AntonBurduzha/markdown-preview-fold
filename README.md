@@ -1,6 +1,6 @@
 # Markdown Preview Fold
 
-[![VS Code Marketplace](https://vsmarketplacebadges.dev/version/antonburduzha.markdown-preview-fold.svg?label=Marketplace)](https://marketplace.visualstudio.com/items?itemName=antonburduzha.markdown-preview-fold)
+[![VS Code Marketplace](https://vsmarketplacebadges.dev/version/antonburduzha.markdown-preview-fold.svg)](https://marketplace.visualstudio.com/items?itemName=antonburduzha.markdown-preview-fold)
 [![Open VSX](https://img.shields.io/open-vsx/v/antonburduzha/markdown-preview-fold?label=Open%20VSX)](https://open-vsx.org/extension/antonburduzha/markdown-preview-fold)
 [![CI](https://github.com/AntonBurduzha/markdown-preview-fold/actions/workflows/ci.yml/badge.svg)](https://github.com/AntonBurduzha/markdown-preview-fold/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/github/license/AntonBurduzha/markdown-preview-fold)](LICENSE)
