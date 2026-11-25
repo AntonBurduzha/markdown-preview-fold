@@ -1,12 +1,13 @@
 # Markdown Preview Fold
 
-![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/antonburduzha.markdown-preview-fold?label=Marketplace)
-![Open VSX](https://img.shields.io/open-vsx/v/antonburduzha/markdown-preview-fold?label=Open%20VSX)
-![CI](https://github.com/AntonBurduzha/markdown-preview-fold/actions/workflows/ci.yml/badge.svg)
+[![VS Code Marketplace](https://vsmarketplacebadges.dev/version/antonburduzha.markdown-preview-fold.svg?label=Marketplace)](https://marketplace.visualstudio.com/items?itemName=antonburduzha.markdown-preview-fold)
+[![Open VSX](https://img.shields.io/open-vsx/v/antonburduzha/markdown-preview-fold?label=Open%20VSX)](https://open-vsx.org/extension/antonburduzha/markdown-preview-fold)
+[![CI](https://github.com/AntonBurduzha/markdown-preview-fold/actions/workflows/ci.yml/badge.svg)](https://github.com/AntonBurduzha/markdown-preview-fold/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/github/license/AntonBurduzha/markdown-preview-fold)](LICENSE)
 
 Fold heading sections in the built-in Markdown preview of VS Code, Cursor and other VS Code based editors.
 
-![demo](/images/demo.gif)
+![Folding sections in the preview](images/demo.gif)
 
 ## Features
 
