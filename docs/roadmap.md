@@ -16,14 +16,13 @@ Statuses: `todo`, `doing`, `done`.
 | T08 | Commands               | Collapse All / Expand All: title bar, Command Palette, key bindings; integration tests             | done   |
 | T09 | Quality and CI         | GitHub repository, CI on every push (VS Code 1.90 and stable), Dependabot                          | doing  |
 | T10 | Package and polish     | Icon, README with a demo GIF, CHANGELOG, `.vscodeignore`, a `.vsix` you use every day              | doing  |
-| T11 | Publish                | VS Code Marketplace and Open VSX, release workflow on tags                                         | doing  |
+| T11 | Publish                | VS Code Marketplace and Open VSX, release workflow on tags                                         | done   |
 | T12 | Launch                 | Repository for contributors, posts, feedback, plan for 0.2                                         | doing  |
 
 What's left is done by hand:
 
 - **T09:** create the GitHub repository, push, set up the `main` ruleset. The workflows are in `.github/`.
 - **T10:** a demo GIF for the README, a few days of daily use of the `.vsix`.
-- **T11:** the publisher and the namespace, the first upload to both registries, Trusted Publishing and the `OVSX_PAT` secret. `release.yml` is ready.
 - **T12:** Discussions, topics, social preview, the first release from a tag, posts.
 
 ## Later

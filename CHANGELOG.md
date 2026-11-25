@@ -2,7 +2,13 @@
 
 All notable changes to this extension are documented here. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/AntonBurduzha/markdown-preview-fold/compare/v0.1.0...HEAD)
+## [Unreleased](https://github.com/AntonBurduzha/markdown-preview-fold/compare/v0.1.1...HEAD)
+
+## [0.1.1](https://github.com/AntonBurduzha/markdown-preview-fold/compare/v0.1.0...v0.1.1) - 2026-11-25
+
+### Fixed
+
+- The Marketplace badge in the README shows the version again, and the badges link to the Marketplace, Open VSX, CI and the license.
 
 ## [0.1.0](https://github.com/AntonBurduzha/markdown-preview-fold/releases/tag/v0.1.0) - 2026-11-25
 
