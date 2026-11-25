@@ -3,4 +3,4 @@ out/
 coverage/
 .vscode-test/
 pnpm-lock.yaml
-docs/learn/
+HANDBOOK.md

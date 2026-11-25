@@ -1,0 +1,42 @@
+name: Bug report
+description: Something doesn't fold, unfold or remember the way it should.
+labels: [bug]
+body:
+  - type: input
+    id: editor
+    attributes:
+      label: Editor and version
+      description: Help → About. For example "Cursor 3.30.14" or "VS Code 1.147.0".
+    validations:
+      required: true
+  - type: input
+    id: extension
+    attributes:
+      label: Extension version
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: textarea
+    id: markdown
+    attributes:
+      label: A small Markdown file that shows the problem
+      render: markdown
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps, what you expected, and what happened
+      placeholder: |
+        1. Open the preview to the side
+        2. Fold "Setup"
+        3. Edit a line inside it
+        Expected: "Setup" stays folded. Actual: it opens.
+    validations:
+      required: true
+  - type: textarea
+    id: console
+    attributes:
+      label: Errors in the preview console (optional)
+      description: '"Developer: Open Webview Developer Tools" → Console.'
+      render: text

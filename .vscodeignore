@@ -1,0 +1,10 @@
+# Everything is excluded, then the files the extension needs are added back.
+**
+!dist/extension.js
+!dist/preview.js
+!media/preview.css
+!images/icon.png
+!package.json
+!README.md
+!CHANGELOG.md
+!LICENSE

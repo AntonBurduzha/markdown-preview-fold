@@ -6,8 +6,8 @@ coverage/
 *.vsix
 .DS_Store
 
-# Private learning notes
-docs/learn/
+# Private notes, not for the repository
+HANDBOOK.md
 
 # Claude
 CLAUDE.md

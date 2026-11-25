@@ -72,7 +72,7 @@ sequenceDiagram
     Script->>Script: read the marker, rebuild the outline, renderView(state)
 ```
 
-On a first load (opening the preview, switching back to its tab, restarting the editor), the page is built from scratch and the script runs `update()` once it's loaded. Preview scripts are loaded with `async`, so it waits for `DOMContentLoaded` if the page is still parsing.
+On a first load (opening the preview, switching back to its tab, restarting the editor, a bulk command's refresh), the page is built from scratch. Its HTML has no `.markdown-body`: the preview's own script (`media/index.js`) adds it from a data attribute after `DOMContentLoaded`, and fires no `vscode.markdown.updateContent` for it. That script and ours are both loaded with `async`, so either can run first. The script therefore observes the document with a `MutationObserver` and runs `update()` as soon as `.markdown-body` is there, or at once if it already is. The first `update()` stops the observer, and later updates come through the event.
 
 ## The outline
 
@@ -116,9 +116,9 @@ A key is the parent's key, the heading text with collapsed whitespace, and the i
 Collapse All and Expand All are VS Code commands, and the host can't reach the page directly. So:
 
 1. The command stores an encoded command, `collapseAll:<uuid>`, in `CommandChannel` for 1.5 seconds.
-2. It runs `markdown.preview.refresh`, which renders every open preview again, even when the text didn't change.
+2. It runs `markdown.preview.refresh`, which renders every open preview again, even when the text didn't change. The refresh is forced, so the preview sets the webview's HTML and the page reloads, instead of a `vscode.markdown.updateContent`.
 3. `markerPlugin` adds `data-cmd="collapseAll:<uuid>"` to the marker in that render.
-4. The script applies a command id once. It ignores a command that's already in the first render of a page, because that render belongs to a webview that replaced an older one.
+4. The script applies a command id once per page, including on the page's first update, which is where the reload delivers it. A page that loads within the 1.5 seconds for another reason, such as a preview opened right after the command, applies it too.
 
 The marker is added in `renderer.render`, not in a core rule. The engine caches parsed tokens per document version, and it passes `env.currentDocument` only to `render`. A core rule would see neither a new command nor the document.
 

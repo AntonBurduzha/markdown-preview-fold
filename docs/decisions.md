@@ -1,6 +1,6 @@
 # Decisions
 
-Each decision has its context, the choice, and what follows from it. The spike in T02 checks the assumptions in a real editor. Its results are at the end.
+Each decision has its context, the choice, and what follows from it. The assumptions that only a real editor can confirm are listed at the end, with room for the results.
 
 ## 001. Extend the built-in preview, not Cursor's inline editor
 
@@ -14,7 +14,7 @@ Each decision has its context, the choice, and what follows from it. The spike i
 
 **Context.** The preview patches `.markdown-body` with morphdom on every change. Elements we changed (a class, a caret) no longer equal the new HTML, so morphdom resets them. After patching, the preview dispatches `vscode.markdown.updateContent` on `window`.
 
-**Decision.** Keep the state in the script, and make `renderView` idempotent. Run it on load and on every `vscode.markdown.updateContent`.
+**Decision.** Keep the state in the script, and make `renderView` idempotent. Run it once the page's content is there, and on every `vscode.markdown.updateContent`. On a new page the content arrives without that event, so the script waits for `.markdown-body` with a `MutationObserver` (see "The update cycle" in architecture.md).
 
 **Consequences.** No fight with morphdom, and no flicker: the patch and our render run in the same task, before the browser paints. The alternative, wrapping sections in `<details>` from a markdown-it plugin, would change the document structure for every user of the engine, and morphdom matches elements by position, so the `open` state could move to the wrong section after an edit.
 
@@ -46,9 +46,11 @@ Each decision has its context, the choice, and what follows from it. The spike i
 
 **Context.** Commands, menus and key bindings live in the extension host. The preview page can't receive messages from our extension.
 
-**Decision.** A command stores `collapseAll:<uuid>` for 1.5 s and runs `markdown.preview.refresh`. The marker carries it into the next render. The page applies each id once, and ignores a command that's already there on its first render.
+**Decision.** A command stores `collapseAll:<uuid>` for 1.5 s and runs `markdown.preview.refresh`. The marker carries it into the next render. Each page applies an id once, including on its first update.
 
-**Consequences.** Collapse All and Expand All work from the title bar, the Command Palette and `Cmd+K Cmd+0` / `Cmd+K Cmd+J`. They act on every open preview, because the host can't tell which one is focused. The fallback, if the spike had failed, was a small toolbar inside the preview.
+**Consequences.** Collapse All and Expand All work from the title bar, the Command Palette and `Cmd+K Cmd+0` / `Cmd+K Cmd+J`. They act on every open preview, because the host can't tell which one is focused. The refresh is forced, so the preview sets the webview's HTML again and the page reloads. The command therefore arrives on the new page's first update. A page that loads for another reason within those 1.5 s also applies it, such as a preview opened right after the command or a hidden preview whose tab is shown again. A per-webview record of seen ids isn't possible: `localStorage` is shared by all previews, and the reload starts a fresh page. The fallback, if the spike had failed, was a small toolbar inside the preview.
+
+An earlier version ignored a command present on a page's first update, on the assumption that the refresh posts `updateContent` to the existing page. It doesn't, so every bulk command was dropped.
 
 ## 007. Hidden blocks leave scroll sync
 
@@ -64,6 +66,7 @@ Each decision has its context, the choice, and what follows from it. The spike i
 
 - **pnpm 12.** Build scripts of dependencies are blocked by default, so `pnpm-workspace.yaml` allows `esbuild` and `@vscode/vsce-sign` (`allowBuilds`).
 - **esbuild, two bundles.** `dist/extension.js` (CommonJS for Node, `vscode` external) and `dist/preview.js` (an IIFE for the browser). One small file each, so the extension loads fast and the `.vsix` stays around 16 KB.
+- **Inline source map for the preview in dev builds.** The preview's CSP (`default-src 'none'`) blocks Webview DevTools from fetching `preview.js.map`, which put an error in the console on every reload. The map and the TypeScript sources are embedded in `dist/preview.js` instead. The extension bundle keeps a separate `.map`, because the Node debugger reads it from disk. Production builds have no maps.
 - **TypeScript 6.0.** typescript-eslint supports TypeScript below 6.1, so TypeScript 7 waits.
 - **Two tsconfig projects.** `tsconfig.node.json` (Node and `vscode` types, no DOM) and `tsconfig.preview.json` (DOM, no `vscode`), so the compiler catches code in the wrong runtime.
 - **`engines.vscode ^1.90.0`** with `@types/vscode 1.90.0`. vsce rejects `@types/vscode` newer than `engines`. CI runs the integration tests on 1.90.0 and on stable.
@@ -79,14 +82,17 @@ Each decision has its context, the choice, and what follows from it. The spike i
 
 ## Spike results (T02)
 
-Fill in after T02. Cursor: version, VS Code: version.
+The integration tests cover the marker and the commands in VS Code 1.90.0 and stable. The rest is checked by hand in the editor, with the checklist in the developer's handbook. Cursor: 3.31.11 (VS Code 1.128.0), checked 2026-11-25. VS Code: 1.148.0, checked 2026-11-25.
 
-| #   | Check                                                                                          | Cursor | VS Code | Decision |
-| --- | ---------------------------------------------------------------------------------------------- | ------ | ------- | -------- |
-| 1   | The preview script loads; `vscode.markdown.updateContent` fires on every edit                  |        |         |          |
-| 2   | Morphdom removes our attributes and elements on update                                         |        |         |          |
-| 3   | `localStorage` survives a tab switch and a restart                                             |        |         |          |
-| 4   | Marker + `markdown.preview.refresh` reach the script; a new webview doesn't replay the command |        |         |          |
-| 5   | `Cmd+K Cmd+0` and `Cmd+K Cmd+J` work with the preview focused                                  |        |         |          |
-| 6   | Scroll sync with hidden blocks, with and without removing `code-line`                          |        |         |          |
-| 7   | How to open `.md` files in the classic preview by default                                      |        |         |          |
+| #   | Check                                                                                  | Cursor                               | VS Code | Decision |
+| --- | -------------------------------------------------------------------------------------- | ------------------------------------ | ------- | -------- |
+| 1   | The preview script loads; `vscode.markdown.updateContent` fires on every edit          | Works, after the fix below           | Works   | ADR 002  |
+| 2   | Morphdom removes our attributes and elements on update                                 | Works: the state survives edits      | Works   | ADR 002  |
+| 3   | `localStorage` survives a tab switch and a restart                                     | Works                                | Works   | ADR 004  |
+| 4   | Marker + `markdown.preview.refresh` reach the script; each page applies a command once | Works, after the fix below           | Works   | ADR 006  |
+| 5   | `Cmd+K Cmd+0` and `Cmd+K Cmd+J` work with the preview focused                          | Works                                | Works   | ADR 006  |
+| 6   | Scroll sync with hidden blocks, with and without removing `code-line`                  | Works: no jumps with folded sections | Works   | ADR 007  |
+
+Check 4, found in Cursor 3.31.11 (VS Code 1.128.0) by reading its bundled `markdown-language-features`: `markdown.preview.refresh` calls each preview's `refresh(true)`, and a forced update sets `webview.html`, so the page reloads and gets the command on its first update. ADR 006 changed to match.
+
+Check 1, found by hand in Cursor and confirmed in its `media/index.js`: after switching to another tab and back, the carets didn't appear until the next edit. The new page gets `.markdown-body` from the preview's script after `DOMContentLoaded`, with no update event, and our `async` script could run before it. ADR 002 changed to match.

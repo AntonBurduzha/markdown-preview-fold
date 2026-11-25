@@ -1,6 +1,8 @@
 // @ts-check
 // Builds the two bundles: the extension (Node, extension host) and the preview script (browser).
 // Flags: --watch, --production (minified, no source maps), --tests (also builds integration tests).
+// Dev builds: the extension gets a separate .map; the preview gets an inline map with its sources,
+// because the preview's CSP blocks DevTools from fetching a .map file.
 import * as esbuild from 'esbuild';
 
 const watch = process.argv.includes('--watch');
@@ -54,6 +56,10 @@ const builds = [
     platform: 'browser',
     format: 'iife',
     target: 'es2022',
+    // The preview CSP (`default-src 'none'`) blocks fetching a separate .map file or the .ts sources,
+    // so both go inline. Without the sources, DevTools would try to fetch src/preview/*.ts and fail too.
+    sourcemap: production ? false : 'inline',
+    sourcesContent: true,
   },
 ];
 

@@ -1,0 +1,90 @@
+/* Markdown Preview Fold: carets and collapsed sections in the built-in preview. */
+
+:root {
+  --mdfold-caret-size: 16px;
+  /* From the heading's left edge into the page margin, clear of the preview's selection bar. */
+  --mdfold-caret-offset: -30px;
+}
+
+.mdfold-hidden {
+  display: none !important;
+}
+
+.mdfold-foldable {
+  position: relative;
+}
+
+.mdfold-caret {
+  /* Inherit the heading's font, so `lh` is the heading's line height: centred on the first line. */
+  font: inherit;
+  position: absolute;
+  top: calc(0.5lh - var(--mdfold-caret-size) / 2);
+  left: var(--mdfold-caret-offset);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--mdfold-caret-size);
+  height: var(--mdfold-caret-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: none;
+  color: var(--vscode-descriptionForeground, currentColor);
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.mdfold-caret svg {
+  width: 12px;
+  height: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.15s ease;
+}
+
+/* Obsidian style: visible on hover, always visible when collapsed. */
+.mdfold-foldable:hover > .mdfold-caret,
+.mdfold-collapsed > .mdfold-caret {
+  opacity: 0.7;
+}
+
+.mdfold-caret:hover {
+  opacity: 1;
+  background: var(--vscode-toolbar-hoverBackground, transparent);
+}
+
+.mdfold-caret:focus-visible {
+  opacity: 1;
+  outline: 1px solid var(--vscode-focusBorder);
+  outline-offset: 1px;
+}
+
+.mdfold-collapsed > .mdfold-caret svg {
+  transform: rotate(-90deg);
+}
+
+.mdfold-collapsed::after {
+  content: '…';
+  margin-left: 0.35em;
+  color: var(--vscode-descriptionForeground, currentColor);
+  font-weight: normal;
+}
+
+/* High contrast themes: no faded states. */
+.vscode-high-contrast .mdfold-foldable:hover > .mdfold-caret,
+.vscode-high-contrast .mdfold-collapsed > .mdfold-caret {
+  opacity: 1;
+  color: var(--vscode-foreground, currentColor);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mdfold-caret,
+  .mdfold-caret svg {
+    transition: none;
+  }
+}

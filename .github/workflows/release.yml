@@ -1,0 +1,38 @@
+name: Release
+
+# Push a tag like v0.1.1 to publish. The tag must match package.json "version".
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write # create the GitHub Release
+  id-token: write # VS Code Marketplace Trusted Publishing (OIDC)
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - run: pnpm install --frozen-lockfile
+      - name: Check that the tag matches package.json
+        run: test "v$(node -p "require('./package.json').version")" = "$GITHUB_REF_NAME"
+      - run: pnpm check
+      - run: xvfb-run -a pnpm test:integration
+      - run: pnpm exec vsce package --no-dependencies --out markdown-preview-fold.vsix
+      - name: Publish to the VS Code Marketplace
+        run: pnpm exec vsce publish --packagePath markdown-preview-fold.vsix --oidc
+      - name: Publish to Open VSX
+        run: pnpm exec ovsx publish markdown-preview-fold.vsix
+        env:
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
+      - name: Create the GitHub Release
+        run: >-
+          gh release create "$GITHUB_REF_NAME" markdown-preview-fold.vsix
+          --title "$GITHUB_REF_NAME" --generate-notes --verify-tag
+        env:
+          GH_TOKEN: ${{ github.token }}
