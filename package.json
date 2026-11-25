@@ -132,7 +132,7 @@
     "eslint": "10.15.0",
     "globals": "17.14.0",
     "jsdom": "31.0.1",
-    "markdown-it": "14.3.3",
+    "markdown-it": "15.0.3",
     "morphdom": "2.7.8",
     "ovsx": "1.4.0",
     "prettier": "3.10.1",
