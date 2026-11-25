@@ -1,11 +1,11 @@
-import MarkdownIt from 'markdown-it';
+import MarkdownIt, { type MarkdownIt as MarkdownItInstance } from 'markdown-it';
 import { describe, expect, it } from 'vitest';
 import { markerPlugin } from '../../src/markdownIt/marker';
 
 // VS Code passes a vscode.Uri; the plugin only needs its string form.
 const uri = (value: string) => ({ toString: () => value });
 
-function engine(getCommand: () => string | undefined = () => undefined): MarkdownIt {
+function engine(getCommand: () => string | undefined = () => undefined): MarkdownItInstance {
   return new MarkdownIt().use(markerPlugin, { getCommand });
 }
 

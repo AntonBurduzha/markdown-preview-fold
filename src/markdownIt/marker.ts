@@ -1,4 +1,4 @@
-import type MarkdownIt from 'markdown-it';
+import type { MarkdownIt } from 'markdown-it';
 import { META_CLASS } from '../shared/protocol';
 
 export interface MarkerOptions {
@@ -15,9 +15,10 @@ interface RenderEnv {
 // A core rule would see neither the document nor a new command.
 export function markerPlugin(md: MarkdownIt, options: MarkerOptions): void {
   const render = md.renderer.render.bind(md.renderer);
-  md.renderer.render = (tokens, renderOptions, env: RenderEnv | undefined) => {
+  md.renderer.render = (tokens, renderOptions, env) => {
     const html = render(tokens, renderOptions, env);
-    const doc = env?.currentDocument;
+    // markdown-it types `env` loosely; VS Code puts `currentDocument` on it.
+    const doc = (env as RenderEnv | undefined)?.currentDocument;
     if (!doc) return html;
     return markerHtml(md, doc.toString(), options.getCommand()) + html;
   };
