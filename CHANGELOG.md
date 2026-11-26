@@ -2,7 +2,13 @@
 
 All notable changes to this extension are documented here. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the versions follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased](https://github.com/AntonBurduzha/markdown-preview-fold/compare/v0.1.2...HEAD)
+## [Unreleased](https://github.com/AntonBurduzha/markdown-preview-fold/compare/v0.1.3...HEAD)
+
+## [0.1.3](https://github.com/AntonBurduzha/markdown-preview-fold/compare/v0.1.2...v0.1.3) - 2026-11-26
+
+### Security
+
+- The development dependencies serialize-javascript and minimatch are pinned to patched versions. They are used only by the test and packaging tools and are not part of the extension.
 
 ## [0.1.2](https://github.com/AntonBurduzha/markdown-preview-fold/compare/v0.1.1...v0.1.2) - 2026-11-25
 
