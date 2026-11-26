@@ -2,7 +2,7 @@
   "name": "markdown-preview-fold",
   "displayName": "Markdown Preview Fold",
   "description": "Collapse and expand heading sections in the built-in Markdown preview.",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "publisher": "antonburduzha",
   "license": "MIT",
   "author": {
